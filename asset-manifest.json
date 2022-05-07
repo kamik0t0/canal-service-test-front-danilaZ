@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/CalanlService-test-task-front/static/css/main.c66d6d62.css",
+    "main.js": "/CalanlService-test-task-front/static/js/main.1d5ccca8.js",
+    "index.html": "/CalanlService-test-task-front/index.html",
+    "main.c66d6d62.css.map": "/CalanlService-test-task-front/static/css/main.c66d6d62.css.map",
+    "main.1d5ccca8.js.map": "/CalanlService-test-task-front/static/js/main.1d5ccca8.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.c66d6d62.css",
+    "static/js/main.1d5ccca8.js"
+  ]
+}
