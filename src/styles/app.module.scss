@@ -1,0 +1,28 @@
+@import "../styles/zeroing-style.scss";
+
+.app {
+    position: relative;
+    background-color: #758ca8;
+    overflow: hidden;
+    height: 100vh;
+}
+
+*::-webkit-scrollbar {
+    background-color: #768ca6;
+    width: 7px;
+}
+
+*:hover:-webkit-scrollbar {
+    background-color: #768ca6;
+    width: 7px;
+}
+
+*::-webkit-scrollbar-thumb {
+    background-color: #768ca6;
+    border-radius: 7px;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+    background-color: #343c54;
+    border-radius: 7px;
+}

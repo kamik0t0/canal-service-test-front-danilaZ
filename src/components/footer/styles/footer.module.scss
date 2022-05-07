@@ -1,0 +1,22 @@
+.footer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    flex: 1 0 10%;
+    width: 35%;
+    min-width: 320px;
+    height: 7vh;
+    background-color: #768ca6;
+    margin: 0 auto;
+    .page {
+        font-size: 1.1em;
+        font-weight: 500;
+        font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS",
+            sans-serif;
+        color: snow;
+    }
+    .page:hover {
+        cursor: pointer;
+    }
+}

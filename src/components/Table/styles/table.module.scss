@@ -1,0 +1,79 @@
+@import "../../../styles/content-frame.scss";
+
+@mixin hover {
+    box-shadow: none;
+    cursor: pointer;
+    background-color: whitesmoke;
+}
+
+@mixin font {
+    font-weight: 700;
+    font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS",
+        sans-serif;
+    color: #f0ebdd;
+}
+
+.table_header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+
+    .table_header_filter {
+        display: flex;
+        flex-basis: 40%;
+        align-items: flex-end;
+        justify-content: space-around;
+
+        .table_header_filter_name {
+            font-size: 1.2em;
+        }
+    }
+}
+.table_list_header {
+    display: flex;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    font-size: 1.3em;
+
+    .table_list_header_date {
+        text-align: center;
+        flex: 0 0 20%;
+        border-right: 1px solid snow;
+    }
+
+    .table_list_header_date:hover {
+        cursor: default;
+    }
+
+    .table_list_header_name {
+        text-align: center;
+        flex: 0 0 50%;
+        border-right: 1px solid snow;
+    }
+
+    .table_list_header_name:hover {
+        cursor: pointer;
+    }
+    .table_list_header_qtty {
+        text-align: center;
+        flex: 0 0 15%;
+        border-right: 1px solid snow;
+    }
+
+    .table_list_header_qtty:hover {
+        cursor: pointer;
+    }
+    .table_list_header_dist {
+        text-align: center;
+        flex: 0 0 15%;
+    }
+
+    .table_list_header_dist {
+        cursor: pointer;
+    }
+}
+
+.table_list_frame {
+    overflow: auto;
+}

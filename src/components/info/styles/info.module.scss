@@ -1,0 +1,31 @@
+.info {
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+    overflow: auto;
+    font-size: 1.1em;
+    font-weight: 500;
+    font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS",
+        sans-serif;
+    color: #f0ebdc;
+    line-height: 1.3;
+    text-align: justify;
+    height: 93vh;
+    border-bottom: dashed 1px snow;
+    .title {
+        align-self: center;
+        font-size: 1.3em;
+        font-weight: 700;
+        padding-bottom: 15px;
+    }
+    .bottom {
+        align-self: center;
+        font-size: 1.3em;
+        font-weight: 700;
+        color: rgb(228, 92, 92);
+        padding-top: 15px;
+    }
+    li {
+        text-indent: 10px;
+    }
+}
