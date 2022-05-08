@@ -104,11 +104,13 @@ export default function Table({ limit, setLimit }) {
      * @name filtered
      */
     function filtered(event) {
+        console.log(sliced);
         /**
          * @type {(Number|String)}
          */
 
         let text = event.target.value;
+        console.log(text);
         // в случае если передана пустая строка возвращаем исходный массив данных
         if (text === "") {
             setTableItems([...sliced]);
@@ -121,6 +123,7 @@ export default function Table({ limit, setLimit }) {
 
         let filtered;
         // Логика фильтрации для типа "string".
+        console.log(searchName);
         if (searchName === "name") {
             switch (searchCondition) {
                 case "equal":

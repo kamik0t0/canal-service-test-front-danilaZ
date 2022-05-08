@@ -27,8 +27,8 @@ export default function App() {
          */
         async function getPages() {
             const instance = axios.create({
-                baseURL: "https://canal-service-back.herokuapp.com",
-                // baseURL: "http://localhost:5700",
+                // baseURL: "https://canal-service-back.herokuapp.com",
+                baseURL: "http://localhost:5700",
             });
             try {
                 const Page = await (await instance.get()).data[0];
