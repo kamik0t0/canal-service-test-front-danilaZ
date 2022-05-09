@@ -3,7 +3,7 @@ import classes from "./styles/info.module.css";
 
 export default function Info() {
     return (
-        <div className={classes.info}>
+        <div data-testid="info" className={classes.info}>
             <div className={classes.title}>Инструкция по эксплуатации:</div>
             <ol>
                 <li>
@@ -42,12 +42,6 @@ export default function Info() {
                     тем не менее сохранит работоспособность.{" "}
                 </li>
                 <li>
-                    Если количество строк будет больше чем способно отобразить
-                    окно, то появится возможность прокрутки (при перемещении
-                    курсора вправо появится полоса стилизованная полоса
-                    прокрути).
-                </li>
-                <li>
                     Работоспособность приложения проверена в Chrome, Mozilla,
                     Microsoft Edge.
                 </li>
@@ -58,7 +52,7 @@ export default function Info() {
             </ol>
 
             <div className={classes.bottom}>
-                Клик за пределы окна чтобы оно исчезло
+                Клик за пределы окна чтобы исчезло
             </div>
         </div>
     );

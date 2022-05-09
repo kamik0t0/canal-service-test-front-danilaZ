@@ -307,7 +307,10 @@ export default function Table({ limit, setLimit }) {
                             <div className={classes.table_header_name}></div>
                         </div>
                         {/* шапка */}
-                        <div className={classes.table_list_frame}>
+                        <div
+                            data-testid="table"
+                            className={classes.table_list_frame}
+                        >
                             <div className={classes.table_list_header}>
                                 {/* дата */}
                                 <div

@@ -19,32 +19,30 @@ export default function App() {
     const [limit, setLimit] = useState(10);
     // Состояние для управление модальным окном
     const [modal, setModal] = useState(true);
+    /**
+     * @function выполняет запрос на сервер, получает данные и изменяет глобальное состояние
+     * @name getPages
+     */
+    async function getPages() {
+        try {
+            const Page = await (
+                await axios.get("http://localhost:5700")
+            ).data[0];
+            dispatch(setPagesAction(makePagesList(Page, limit)));
+            dispatch(setCountriesAction(Page));
+            setLoader(false);
+        } catch (error) {
+            console.log(error);
+            // в случае ошибки подключения к серверу или к БД будут подставлены фейковые данные из приложения, чтобы можно было проверить основной функционал
+            dispatch(setPagesAction(makePagesList(fakeData, limit)));
+            dispatch(setCountriesAction(fakeData));
+            setLoader(false);
+        }
+    }
 
     useEffect(() => {
-        /**
-         * @function выполняет запрос на сервер, получает данные и изменяет глобальное состояние
-         * @name getPages
-         */
-        async function getPages() {
-            const instance = axios.create({
-                // baseURL: "https://canal-service-back.herokuapp.com",
-                baseURL: "http://localhost:5700",
-            });
-            try {
-                const Page = await (await instance.get()).data[0];
-                dispatch(setPagesAction(makePagesList(Page, limit)));
-                dispatch(setCountriesAction(Page));
-                setLoader(false);
-            } catch (error) {
-                console.log(error);
-                // в случае ошибки подключения к серверу или к БД будут подставлены фейковые данные из приложения, чтобы можно было проверить основной функционал
-                dispatch(setPagesAction(makePagesList(fakeData, limit)));
-                dispatch(setCountriesAction(fakeData));
-                setLoader(false);
-            }
-        }
-        getPages();
-    });
+        return () => getPages();
+    }, []);
 
     return (
         <>
