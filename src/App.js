@@ -46,7 +46,7 @@ export default function App() {
 
     return (
         <>
-            <div id="app" className={classes.app}>
+            <div data-testid="app" id="app" className={classes.app}>
                 {loader ? (
                     <Loader />
                 ) : (

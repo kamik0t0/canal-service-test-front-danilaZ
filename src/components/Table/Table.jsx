@@ -104,13 +104,11 @@ export default function Table({ limit, setLimit }) {
      * @name filtered
      */
     function filtered(event) {
-        console.log(sliced);
         /**
          * @type {(Number|String)}
          */
 
         let text = event.target.value;
-        console.log(text);
         // в случае если передана пустая строка возвращаем исходный массив данных
         if (text === "") {
             setTableItems([...sliced]);
@@ -123,7 +121,6 @@ export default function Table({ limit, setLimit }) {
 
         let filtered;
         // Логика фильтрации для типа "string".
-        console.log(searchName);
         if (searchName === "name") {
             switch (searchCondition) {
                 case "equal":
@@ -200,7 +197,7 @@ export default function Table({ limit, setLimit }) {
         <>
             {
                 <>
-                    <div className={classes.content}>
+                    <div data-testid="div" className={classes.content}>
                         <div className={classes.table_header}>
                             <div className={classes.table_header_filter}>
                                 <div
@@ -208,6 +205,7 @@ export default function Table({ limit, setLimit }) {
                                 >
                                     {/* Поиск по: */}
                                     <MySelect
+                                        data-testid="search-column"
                                         defaultValue={["выбрать колонку"][0]}
                                         func={(event) => {
                                             setSearchName(event.target.value);
@@ -234,6 +232,7 @@ export default function Table({ limit, setLimit }) {
                                 >
                                     {/* Условие: */}
                                     <MySelect
+                                        data-testid="search-condition"
                                         defaultValue={["условие"][0]}
                                         func={(event) => {
                                             setSearchCondition(
@@ -265,6 +264,7 @@ export default function Table({ limit, setLimit }) {
                                     className={classes.table_header_filter_name}
                                 ></div>
                                 <MyInput
+                                    data-testid="text-input"
                                     id="filter-input"
                                     placeholder="начинайте вводить..."
                                     type="text"
@@ -274,6 +274,7 @@ export default function Table({ limit, setLimit }) {
                             <div className={classes.table_header_filter_name}>
                                 {/* Поиск по: */}
                                 <MySelect
+                                    data-testid="pages-qtty"
                                     defaultValue={["строк"][0]}
                                     func={(event) => {
                                         setLimit(+event.target.value);

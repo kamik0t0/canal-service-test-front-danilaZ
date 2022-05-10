@@ -15,6 +15,7 @@ export default function Footer({ filter, limit }) {
                 {pages.map((page, index) => {
                     return (
                         <div
+                            data-testid={index + 1}
                             key={uuid()}
                             // по клику из колбека filter в HOC компонент Table получаем текущую страницу
                             onClick={() => filter(index + 1, limit)}
