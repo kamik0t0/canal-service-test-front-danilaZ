@@ -45,8 +45,8 @@ export default function Table() {
         const newLimit = +event.target.value;
         dispatch(setPagesAction(makePagesList(items, newLimit)));
         setLimit(newLimit);
-        setSliced([...items.slice(0, limit)]);
-        setTableItems([...items.slice(0, limit)]);
+        setSliced([...items.slice(0, newLimit)]);
+        setTableItems([...items.slice(0, newLimit)]);
     }
 
     // переменные для throttling
