@@ -42,10 +42,8 @@ export default function App() {
     }
 
     useEffect(() => {
-        // сразу очищаем, чтобы избежать дополнительных перерисовок
-        return () => getPages();
-        // выполняем getPages один раз
-    }, []);
+        getPages();
+    });
 
     return (
         <>
