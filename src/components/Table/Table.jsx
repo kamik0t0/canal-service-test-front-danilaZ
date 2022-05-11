@@ -15,10 +15,11 @@ import {
 import { throttle } from "../../utils/throttle.js";
 import PropTypes from "prop-types";
 import Footer from "../footer/Footer.jsx";
+import { getCountries } from "../../redux/selectors.js";
 
 export default function Table({ limit, setLimit }) {
     // Получение всего массива страниц в глобальное состояние
-    const items = useSelector((state) => state.setCountriesReducer.countries);
+    const items = useSelector(getCountries);
     // Локальное состояния списка отображаемых элементов таблицы для пагинации
     const [sliced, setSliced] = useState([...items.slice(0, limit)]);
     // Локальное состояние по работе с элементами таблицы

@@ -1,4 +1,4 @@
-import { render, screen, fireEvent, act } from "@testing-library/react";
+import { screen, fireEvent, act } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import React from "react";
 import axios from "axios";
@@ -17,13 +17,13 @@ describe("Test async response", () => {
     });
     test("Test: axios.get() called once; table renders; modal renders", async () => {
         axios.get.mockReturnValue(response);
-        render(renderWithStore(<App />));
+        renderWithStore(<App />);
         await screen.findByTestId("info");
         expect(await screen.findByTestId("table"));
         expect(axios.get).toBeCalledTimes(1);
     });
     test("Test: all inputs are in the document", async () => {
-        render(renderWithStore(<App />));
+        renderWithStore(<App />);
         expect(await screen.findByTestId("text-input")).toBeInTheDocument();
         expect(
             await screen.findByTestId("search-condition")
@@ -32,11 +32,11 @@ describe("Test async response", () => {
         expect(await screen.findByTestId("search-column")).toBeInTheDocument();
     });
     test("Test: table data in document", async () => {
-        render(renderWithStore(<App />));
+        renderWithStore(<App />);
         expect(await screen.findByText(/Сингапур/i)).toBeInTheDocument();
     });
-    test("Test: filter", async () => {
-        render(renderWithStore(<App />));
+    test("Test: filter input user event", async () => {
+        renderWithStore(<App />);
         const input = await screen.findByTestId("text-input");
 
         act(() => {
@@ -50,8 +50,8 @@ describe("Test async response", () => {
             ).toBeInTheDocument();
         }, 0);
     });
-    test("Test: change shown strings qtty", async () => {
-        render(renderWithStore(<App />));
+    test("Test: select input page shown qtty", async () => {
+        renderWithStore(<App />);
         const strings = await screen.findByTestId("pages-qtty");
         act(() => {
             fireEvent.change(strings, {

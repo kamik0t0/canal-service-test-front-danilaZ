@@ -1,7 +1,7 @@
 /**
  * @function динамически формирует массив страниц для пагинации
  * @name makePagesList
- * @param {Array} pages - страницы
+ * @param {Array} pages - массив страниц
  * @param {Number} limit - количество выводимых строк на страницу
  * @returns {Array}
  */
