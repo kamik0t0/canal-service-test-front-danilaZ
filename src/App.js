@@ -15,8 +15,6 @@ export default function App() {
     const dispatch = useDispatch();
     // Состояние для анимации загрузки
     const [loader, setLoader] = useState(true);
-    // Состояние для лимита отображаемых строк
-    const [limit, setLimit] = useState(10);
     // Состояние для управление модальным окном
     const [modal, setModal] = useState(true);
     /**
@@ -26,22 +24,27 @@ export default function App() {
     async function getPages() {
         try {
             const Page = await (
-                await axios.get("http://localhost:5700")
+                await axios.get("https://canal-service-back.herokuapp.com")
             ).data[0];
-            dispatch(setPagesAction(makePagesList(Page, limit)));
+            // стартовый массив пагинации
+            dispatch(setPagesAction(makePagesList(Page, 10)));
+            // заполняем store
             dispatch(setCountriesAction(Page));
+            // убираем анимацию загрузки
             setLoader(false);
         } catch (error) {
             console.log(error);
             // в случае ошибки подключения к серверу или к БД будут подставлены фейковые данные из приложения, чтобы можно было проверить основной функционал
-            dispatch(setPagesAction(makePagesList(fakeData, limit)));
+            dispatch(setPagesAction(makePagesList(fakeData, 10)));
             dispatch(setCountriesAction(fakeData));
             setLoader(false);
         }
     }
 
     useEffect(() => {
+        // сразу очищаем, чтобы избежать дополнительных перерисовок
         return () => getPages();
+        // выполняем getPages один раз
     }, []);
 
     return (
@@ -54,7 +57,7 @@ export default function App() {
                         <MyModal active={modal} setModal={setModal}>
                             <Info />
                         </MyModal>
-                        <Table limit={limit} setLimit={setLimit} />
+                        <Table />
                     </>
                 )}
             </div>

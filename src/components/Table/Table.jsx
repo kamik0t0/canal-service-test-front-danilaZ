@@ -1,6 +1,6 @@
 // компонент показывающий список существующих накладных
 import React, { useState, useRef, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { v4 as uuid } from "uuid";
 import classes from "./styles/table.module.css";
 import TableItem from "../table-item/TableItem.jsx";
@@ -16,10 +16,14 @@ import { throttle } from "../../utils/throttle.js";
 import PropTypes from "prop-types";
 import Footer from "../footer/Footer.jsx";
 import { getCountries } from "../../redux/selectors.js";
+import { makePagesList } from "../../utils/makePagesList.js";
+import { setPagesAction } from "../../redux/pages-reducer";
 
-export default function Table({ limit, setLimit }) {
+export default function Table() {
+    const dispatch = useDispatch();
     // Получение всего массива страниц в глобальное состояние
     const items = useSelector(getCountries);
+    const [limit, setLimit] = useState(10);
     // Локальное состояния списка отображаемых элементов таблицы для пагинации
     const [sliced, setSliced] = useState([...items.slice(0, limit)]);
     // Локальное состояние по работе с элементами таблицы
@@ -30,6 +34,18 @@ export default function Table({ limit, setLimit }) {
     const [searchName, setSearchName] = useState("name");
     // Локальное состояние для работы с условием фильтрации
     const [searchCondition, setSearchCondition] = useState("contains");
+
+    /**
+     * @function динамически управляет страницами
+     * @name setPagesFooter
+     * @param {Object} event
+     */
+
+    function setPagesFooter(event) {
+        console.log(typeof event);
+        setLimit(+event.target.value);
+        dispatch(setPagesAction(makePagesList(items, limit)));
+    }
 
     useEffect(() => {
         setSliced([...items.slice(0, limit)]);
@@ -47,7 +63,7 @@ export default function Table({ limit, setLimit }) {
      */
 
     const sortByNameState = () => {
-        const sorted = sortByName(sliced, sortOrder);
+        const sorted = sortByName(tableItems, sortOrder);
         setSortOrder(!sortOrder);
         setTableItems([...sorted]);
     };
@@ -58,7 +74,7 @@ export default function Table({ limit, setLimit }) {
      */
 
     const sortByQuantityState = () => {
-        const sorted = sortByQuantity(sliced, sortOrder);
+        const sorted = sortByQuantity(tableItems, sortOrder);
         setSortOrder(!sortOrder);
         setTableItems([...sorted]);
     };
@@ -67,7 +83,7 @@ export default function Table({ limit, setLimit }) {
      * @name sortByDistanceState
      */
     const sortByDistanceState = () => {
-        const sorted = sortByDistance(sliced, sortOrder);
+        const sorted = sortByDistance(tableItems, sortOrder);
         setSortOrder(!sortOrder);
         setTableItems([...sorted]);
     };
@@ -277,9 +293,7 @@ export default function Table({ limit, setLimit }) {
                                 <MySelect
                                     data-testid="pages-qtty"
                                     defaultValue={["строк"][0]}
-                                    func={(event) => {
-                                        setLimit(+event.target.value);
-                                    }}
+                                    func={setPagesFooter}
                                     options={[
                                         "строк",
                                         {
@@ -361,10 +375,5 @@ export default function Table({ limit, setLimit }) {
         </>
     );
 }
-
-Table.propTypes = {
-    limit: PropTypes.number.isRequired,
-    setLimit: PropTypes.func.isRequired,
-};
 
 /* P.s. функции фильтрации, сортировки и прочее реализованы прямо в компоненте, поскольку они отвечают именно за рендеринг и импортировать их с кучей передаваемых параметров для их "чистоты" на мой взгляд нет смысла */
