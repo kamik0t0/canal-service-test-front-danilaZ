@@ -10,6 +10,7 @@ export default function Footer({ filter, limit }) {
      * @type {array} массив динамически сгенерированных страниц
      */
     const pages = useSelector(getPages);
+    console.log(pages);
 
     return (
         <>

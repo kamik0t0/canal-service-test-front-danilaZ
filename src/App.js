@@ -43,9 +43,9 @@ export default function App() {
 
     useEffect(() => {
         // сразу очищаем, чтобы избежать дополнительных перерисовок
-        getPages();
+        return () => getPages();
         // выполняем getPages один раз
-    });
+    }, []);
 
     return (
         <>

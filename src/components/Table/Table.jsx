@@ -42,15 +42,12 @@ export default function Table() {
      */
 
     function setPagesFooter(event) {
-        console.log(typeof event);
-        setLimit(+event.target.value);
-        dispatch(setPagesAction(makePagesList(items, limit)));
-    }
-
-    useEffect(() => {
+        const newLimit = +event.target.value;
+        dispatch(setPagesAction(makePagesList(items, newLimit)));
+        setLimit(newLimit);
         setSliced([...items.slice(0, limit)]);
         setTableItems([...items.slice(0, limit)]);
-    }, [limit]);
+    }
 
     // переменные для throttling
     let isCooldown = useRef(false),
