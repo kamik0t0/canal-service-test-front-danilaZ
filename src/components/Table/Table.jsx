@@ -1,33 +1,48 @@
 // компонент показывающий список существующих накладных
-import React, { useState, useRef, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import React, { useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate, useParams } from "react-router-dom";
 import { v4 as uuid } from "uuid";
-import classes from "./styles/table.module.css";
-import TableItem from "../table-item/TableItem.jsx";
-import MySelect from "../../UI/input/MySelect/MySelect.jsx";
+import { getCountries, getPage } from "../../redux/selectors.js";
 import MyInput from "../../UI/input/MyInput/MyInput.jsx";
+import MySelect from "../../UI/input/MySelect/MySelect.jsx";
 import {
     sortByDate,
+    sortByDistance,
     sortByName,
     sortByQuantity,
-    sortByDistance,
 } from "../../utils/sorts.js";
 import { throttle } from "../../utils/throttle.js";
-import PropTypes from "prop-types";
 import Footer from "../footer/Footer.jsx";
-import { getCountries } from "../../redux/selectors.js";
-import { makePagesList } from "../../utils/makePagesList.js";
-import { setPagesAction } from "../../redux/pages-reducer";
+import TableItem from "../table-item/TableItem.jsx";
+import classes from "./styles/table.module.css";
+import { makePages } from "../../utils/makePages.js";
+import { setCountriesAction } from "../../redux/reducer.js";
 
 export default function Table() {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const { pageParam } = useParams();
     // Получение всего массива страниц в глобальное состояние
     const items = useSelector(getCountries);
+    const page = useSelector(getPage);
+
+    /**
+     * @type {number} устанавливает актуальную и валидную страницу
+     */
+
+    let actualPage = page;
+    // если пользователь перед переключением количества выводимых строк был на странице с номером больше, чем последняя страница после обновления
+    if (pageParam !== page && pageParam <= items.length) {
+        actualPage = pageParam;
+    }
     const [limit, setLimit] = useState(10);
-    // Локальное состояния списка отображаемых элементов таблицы для пагинации
-    const [sliced, setSliced] = useState([...items.slice(0, limit)]);
     // Локальное состояние по работе с элементами таблицы
-    const [tableItems, setTableItems] = useState([...sliced]);
+    const [tableItems, setTableItems] = useState(
+        items[actualPage - 1] !== undefined
+            ? [...items[actualPage - 1]]
+            : [...items[0]]
+    );
     // Локальное состояние для порядка фильтрации
     const [sortOrder, setSortOrder] = useState(false);
     // Локальное состояние для работы со столбцом фильтрации
@@ -35,18 +50,25 @@ export default function Table() {
     // Локальное состояние для работы с условием фильтрации
     const [searchCondition, setSearchCondition] = useState("contains");
 
+    useEffect(() => {
+        setTableItems(
+            items[actualPage - 1] !== undefined
+                ? [...items[actualPage - 1]]
+                : [...items[0]]
+        );
+    }, [page, items, pageParam]);
+
     /**
-     * @function динамически управляет страницами
+     * @function процедура, обрабатывает изменение количества отображаемых строк и перенаправляет на первую страницу
      * @name setPagesFooter
-     * @param {Object} event
+     * @param {object} event
      */
 
     function setPagesFooter(event) {
         const newLimit = +event.target.value;
-        dispatch(setPagesAction(makePagesList(items, newLimit)));
         setLimit(newLimit);
-        setSliced([...items.slice(0, newLimit)]);
-        setTableItems([...items.slice(0, newLimit)]);
+        dispatch(setCountriesAction(makePages(items, newLimit)));
+        navigate(`${1}`);
     }
 
     // переменные для throttling
@@ -86,34 +108,6 @@ export default function Table() {
     };
 
     /**
-     * @type {Number}
-     */
-
-    const prevRender = useRef(1);
-
-    /**
-     * @function фильтрация для пагинации
-     * @name pageFilter
-     * @param {number} page - номер страницы
-     * @param {number} limit - количество элементов на странице (по умолчанию 10)
-     */
-
-    const pageFilter = (page, limit = 10) => {
-        // если передана та же страница перерисовка не происходит
-        if (prevRender.current === +page) return;
-        prevRender.current = page;
-        // вычисляем последнюю страницу...
-        const lastPage = page * limit;
-        // ... и фильтруем массив
-        const filtered = items.filter(
-            (item, index) => index > lastPage - limit && index <= lastPage
-        );
-        // при переключении страниц оба локальных состояния должны измениться
-        setSliced([...filtered]);
-        setTableItems([...filtered]);
-    };
-
-    /**
      * @function - осуществляет непосредственно фильтрацию элементов и изменяет состояние
      * @name filtered
      */
@@ -125,7 +119,7 @@ export default function Table() {
         let text = event.target.value;
         // в случае если передана пустая строка возвращаем исходный массив данных
         if (text === "") {
-            setTableItems([...sliced]);
+            setTableItems([...items[page - 1]]);
             return;
         }
 
@@ -138,7 +132,7 @@ export default function Table() {
         if (searchName === "name") {
             switch (searchCondition) {
                 case "equal":
-                    filtered = sliced.filter(
+                    filtered = items[page - 1].filter(
                         (item) =>
                             item[searchName]
                                 .toString()
@@ -147,14 +141,14 @@ export default function Table() {
                     );
                     break;
                 case "more":
-                    filtered = sliced.filter(
+                    filtered = items[page - 1].filter(
                         (item) =>
                             item[searchName].toString().localeCompare(text) ===
                             1
                     );
                     break;
                 case "less":
-                    filtered = sliced.filter(
+                    filtered = items[page - 1].filter(
                         (item) =>
                             item[searchName].toString().localeCompare(text) ===
                             -1
@@ -165,7 +159,7 @@ export default function Table() {
                      * @type {String}
                      */
                     let regexp = new RegExp(`${text.toLowerCase()}`, "g");
-                    filtered = sliced.filter(
+                    filtered = items[page - 1].filter(
                         (item) =>
                             item[searchName]
                                 .toString()
@@ -177,23 +171,23 @@ export default function Table() {
             // Логика фильтрации для типа "number".
             switch (searchCondition) {
                 case "equal":
-                    filtered = sliced.filter(
+                    filtered = items[page - 1].filter(
                         (item) => +item[searchName] === +text
                     );
                     break;
                 case "more":
-                    filtered = sliced.filter(
+                    filtered = items[page - 1].filter(
                         (item) => +item[searchName] > +text
                     );
                     break;
                 case "less":
-                    filtered = sliced.filter(
+                    filtered = items[page - 1].filter(
                         (item) => +item[searchName] < +text
                     );
                     break;
 
                 default:
-                    filtered = sliced.filter((item) =>
+                    filtered = items[page - 1].filter((item) =>
                         item[searchName].toString().includes(text)
                     );
             }
@@ -366,11 +360,9 @@ export default function Table() {
                                 })}
                         </div>
                     </div>
-                    <Footer filter={pageFilter} limit={limit} />
+                    <Footer limit={limit} />
                 </>
             }
         </>
     );
 }
-
-/* P.s. функции фильтрации, сортировки и прочее реализованы прямо в компоненте, поскольку они отвечают именно за рендеринг и импортировать их с кучей передаваемых параметров для их "чистоты" на мой взгляд нет смысла */

@@ -17,8 +17,8 @@ const COUNTRIES = "COUNTRIES";
 /**
  * @function reducer для работы с redux; хранит массив строк таблицы
  * @name setCountriesReducer
- * @param {object} state - состояние
- * @param {object} action - объект-action
+ * @param {object} state состояние
+ * @param {object} action объект-action
  * @returns {{countries: array}}
  */
 
@@ -35,8 +35,8 @@ export function setCountriesReducer(state = STATE, action) {
 /**
  * @function action creator принимает параметром массив строк и возвращает объект с полями type и payload
  * @name setCountriesAction
- * @param {array} payload - массив страниц
- * @returns {{type: string, payload: array}}
+ * @param {array} payload массив страниц
+ * @returns {{type: string, payload: array}} объект
  */
 
 export const setCountriesAction = (payload) => ({ type: COUNTRIES, payload });

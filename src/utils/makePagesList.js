@@ -3,18 +3,20 @@
  * @name makePagesList
  * @param {Array} pages - массив страниц
  * @param {Number} limit - количество выводимых строк на страницу
- * @returns {Array}
+ * @returns {Array} - количество страниц
  */
 
 export function makePagesList(pages, limit) {
-    console.log(limit);
-    let countPages = Math.ceil(pages.length / limit);
-    console.log(countPages);
     let pagesArr = [];
+    if (Array.isArray(pages[0])) {
+        pages.forEach((elem, index) => pagesArr.push(index + 1));
+    } else {
+        let countPages = Math.ceil(pages.length / limit);
 
-    for (let i = 1; i <= countPages; i++) {
-        pagesArr.push(i);
+        for (let i = 1; i <= countPages; i++) {
+            pagesArr.push(i);
+        }
     }
-    console.log(pagesArr);
+
     return pagesArr;
 }

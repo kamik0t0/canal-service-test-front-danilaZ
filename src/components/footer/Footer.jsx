@@ -1,16 +1,27 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import classes from "./styles/footer.module.css";
 import { v4 as uuid } from "uuid";
-import { useSelector } from "react-redux";
-import PropTypes from "prop-types";
+import { useDispatch, useSelector } from "react-redux";
 import { getPages } from "../../redux/selectors.js";
+import { setPageAction } from "../../redux/page-reducer.js";
+import { getCountries } from "../../redux/selectors.js";
+import { setPagesListAction } from "../../redux/pages-list-reducer.js";
+import { makePagesList } from "../../utils/makePagesList.js";
+import PropTypes from "prop-types";
 
-export default function Footer({ filter, limit }) {
+export default function Footer({ limit }) {
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
     /**
      * @type {array} массив динамически сгенерированных страниц
      */
     const pages = useSelector(getPages);
-    console.log(pages);
+    const items = useSelector(getCountries);
+
+    useEffect(() => {
+        dispatch(setPagesListAction(makePagesList(items, limit)));
+    }, [items]);
 
     return (
         <>
@@ -20,8 +31,11 @@ export default function Footer({ filter, limit }) {
                         <div
                             data-testid={index + 1}
                             key={uuid()}
-                            // по клику из колбека filter в HOC компонент Table получаем текущую страницу
-                            onClick={() => filter(index + 1, limit)}
+                            onClick={() => {
+                                const page = index + 1;
+                                dispatch(setPageAction(page));
+                                navigate(`${page}`);
+                            }}
                             className={classes.page}
                         >
                             {page}
@@ -34,6 +48,5 @@ export default function Footer({ filter, limit }) {
 }
 
 Footer.propTypes = {
-    filter: PropTypes.func.isRequired,
     limit: PropTypes.number.isRequired,
 };

@@ -1,15 +1,15 @@
-import classes from "./styles/app.module.css";
-import Table from "./components/Table/Table.jsx";
-import React, { useEffect, useState } from "react";
 import axios from "axios";
-import Loader from "./UI/Loader/Loader.jsx";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { setCountriesAction } from "./redux/reducer.js";
-import { setPagesAction } from "./redux/pages-reducer";
-import { makePagesList } from "./utils/makePagesList.js";
-import { fakeData } from "./utils/fakeResponseData.js";
-import MyModal from "./UI/modal/modal.jsx";
 import Info from "./components/info/Info.jsx";
+import { setPagesListAction } from "./redux/pages-list-reducer.js";
+import { setCountriesAction } from "./redux/reducer.js";
+import classes from "./styles/app.module.css";
+import Loader from "./UI/Loader/Loader.jsx";
+import MyModal from "./UI/modal/modal.jsx";
+import { makePagesList } from "./utils/makePagesList.js";
+import { makePages } from "./utils/makePages.js";
+import Table from "./components/Table/Table.jsx";
 
 export default function App() {
     const dispatch = useDispatch();
@@ -23,20 +23,18 @@ export default function App() {
      */
     async function getPages() {
         try {
-            const Page = await (
+            const Page = await // await axios.get("http://localhost:5700")
+            (
                 await axios.get("https://canal-service-back.herokuapp.com")
             ).data[0];
             // стартовый массив пагинации
-            dispatch(setPagesAction(makePagesList(Page, 10)));
+            dispatch(setPagesListAction(makePagesList(Page, 10)));
             // заполняем store
-            dispatch(setCountriesAction(Page));
+            dispatch(setCountriesAction(makePages(Page, 10)));
             // убираем анимацию загрузки
             setLoader(false);
         } catch (error) {
             console.log(error);
-            // в случае ошибки подключения к серверу или к БД будут подставлены фейковые данные из приложения, чтобы можно было проверить основной функционал
-            dispatch(setPagesAction(makePagesList(fakeData, 10)));
-            dispatch(setCountriesAction(fakeData));
             setLoader(false);
         }
     }

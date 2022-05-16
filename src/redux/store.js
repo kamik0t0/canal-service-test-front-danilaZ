@@ -1,11 +1,13 @@
 import { legacy_createStore as createStore, combineReducers } from "redux";
 
 import { setCountriesReducer } from "./reducer.js";
-import { setPagesReducer } from "./pages-reducer.js";
+import { setPagesListReducer } from "./pages-list-reducer.js";
+import { setPageReducer } from "./page-reducer.js";
 
 const rootReducer = combineReducers({
     setCountriesReducer: setCountriesReducer,
-    setPagesReducer: setPagesReducer,
+    setPagesListReducer: setPagesListReducer,
+    setPageReducer: setPageReducer,
 });
 
 export const store = createStore(rootReducer);

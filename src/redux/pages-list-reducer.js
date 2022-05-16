@@ -17,12 +17,12 @@ const PAGES = "PAGES";
 /**
  * @function reducer для работы с redux; хранит массив страниц
  * @name setPagesReducer
- * @param {object} state - состояние
- * @param {object} action - объект-action
+ * @param {object} state состояние
+ * @param {object} action объект-action
  * @returns {{pages: array}}
  */
 
-export function setPagesReducer(state = STATE, action) {
+export function setPagesListReducer(state = STATE, action) {
     switch (action.type) {
         case PAGES:
             return { pages: [...action.payload] };
@@ -35,8 +35,8 @@ export function setPagesReducer(state = STATE, action) {
 /**
  * @function action creator принимает параметром массив страниц и возвращает объект с полями type и payload
  * @name setPagesAction
- * @param {array} payload - массив страниц
- * @returns {{type: string, payload: array}}
+ * @param {array} payload массив страниц
+ * @returns {{type: string, payload: array}} объект
  */
 
-export const setPagesAction = (payload) => ({ type: PAGES, payload });
+export const setPagesListAction = (payload) => ({ type: PAGES, payload });
