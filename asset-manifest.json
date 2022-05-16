@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/canal-service-test-front-danilaZ/static/css/main.c66d6d62.css",
-    "main.js": "/canal-service-test-front-danilaZ/static/js/main.6efd19b8.js",
+    "main.css": "/canal-service-test-front-danilaZ/static/css/main.774c5ab8.css",
+    "main.js": "/canal-service-test-front-danilaZ/static/js/main.dfe51f4c.js",
     "index.html": "/canal-service-test-front-danilaZ/index.html",
-    "main.c66d6d62.css.map": "/canal-service-test-front-danilaZ/static/css/main.c66d6d62.css.map",
-    "main.6efd19b8.js.map": "/canal-service-test-front-danilaZ/static/js/main.6efd19b8.js.map"
+    "main.774c5ab8.css.map": "/canal-service-test-front-danilaZ/static/css/main.774c5ab8.css.map",
+    "main.dfe51f4c.js.map": "/canal-service-test-front-danilaZ/static/js/main.dfe51f4c.js.map"
   },
   "entrypoints": [
-    "static/css/main.c66d6d62.css",
-    "static/js/main.6efd19b8.js"
+    "static/css/main.774c5ab8.css",
+    "static/js/main.dfe51f4c.js"
   ]
 }
