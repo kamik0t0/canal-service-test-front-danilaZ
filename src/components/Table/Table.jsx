@@ -32,17 +32,18 @@ export default function Table() {
     const page = useSelector(getPage);
     const countriesOnPage = useSelector(getCountriesOnPage);
     const [rowLimit, setRowLimit] = useLimit(10, items);
-    const [searchCondition, filterCondition] = useFilterCondition();
-    const [searchName, filterColumn] = useFilterColumn();
+    const [condition, filterCondition] = useFilterCondition();
+    const [column, filterColumn] = useFilterColumn();
 
     // Если пользователь введет в строку поиска номер страницы
     const actualPageNumber = pageParam === page ? page : pageParam;
+    // Если страница не существует, то актуальна первая страница
     const actualPage =
         items[actualPageNumber - 1] !== undefined
             ? [...items[actualPageNumber - 1]]
             : [...items[0]];
 
-    const filter = useFilter(actualPage, searchName, searchCondition);
+    const filter = useFilter(actualPage, column, condition);
     const sort = useSort(countriesOnPage);
 
     useEffect(() => {

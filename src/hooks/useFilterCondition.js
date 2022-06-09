@@ -1,8 +1,8 @@
 import { useState } from "react";
 
 export function useFilterCondition(initialColumn = "contains") {
-    const [searchCondition, setSearchCondition] = useState(initialColumn);
-    const filterCondition = (event) => setSearchCondition(event.target.value);
+    const [condition, setCondition] = useState(initialColumn);
+    const filterCondition = (event) => setCondition(event.target.value);
 
-    return [searchCondition, filterCondition];
+    return [condition, filterCondition];
 }
