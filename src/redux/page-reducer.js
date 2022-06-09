@@ -8,10 +8,6 @@ const STATE = {
     page: 1,
 };
 
-/**
- * @type {String} паттерн для redux
- */
-
 const PAGE = "PAGE";
 
 /**

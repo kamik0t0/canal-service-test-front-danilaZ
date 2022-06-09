@@ -5,10 +5,10 @@
  */
 
 const STATE = {
-    countries: [],
+    countriesOnPage: [],
 };
 
-const COUNTRIES = "COUNTRIES";
+const COUNTRIESONPAGE = "COUNTRIESONPAGE";
 
 /**
  * @function reducer для работы с redux; хранит массив строк таблицы
@@ -18,10 +18,10 @@ const COUNTRIES = "COUNTRIES";
  * @returns {{countries: array}}
  */
 
-export function setCountriesReducer(state = STATE, action) {
+export function setCountriesOnPageReducer(state = STATE, action) {
     switch (action.type) {
-        case COUNTRIES:
-            return { countries: [...action.payload] };
+        case COUNTRIESONPAGE:
+            return { countriesOnPage: [...action.payload] };
 
         default:
             return state;
@@ -29,10 +29,13 @@ export function setCountriesReducer(state = STATE, action) {
 }
 
 /**
- * @function action creator принимает параметром массив строк и возвращает объект с полями type и payload
- * @name setCountriesAction
+ * @function action creator принимает параметром массив строк на странице и возвращает объект с полями type и payload
+ * @name setCountriesOnPageAction
  * @param {array} payload массив страниц
  * @returns {{type: string, payload: array}} объект
  */
 
-export const setCountriesAction = (payload) => ({ type: COUNTRIES, payload });
+export const setCountriesOnPageAction = (payload) => ({
+    type: COUNTRIESONPAGE,
+    payload,
+});

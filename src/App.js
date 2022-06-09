@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import Info from "./components/info/Info.jsx";
 import { setPagesListAction } from "./redux/pages-list-reducer.js";
 import { setCountriesAction } from "./redux/reducer.js";
+import { setCountriesOnPageAction } from "./redux/countries-on-page-reducer.js";
 import classes from "./styles/app.module.css";
 import Loader from "./UI/Loader/Loader.jsx";
 import MyModal from "./UI/modal/modal.jsx";
@@ -25,12 +26,13 @@ export default function App() {
         try {
             const Page = await // await axios.get("http://localhost:5700")
             (
-                await axios.get("https://canal-service-back.herokuapp.com")
+                await axios.get("http://localhost:5700")
             ).data[0];
             // стартовый массив пагинации
             dispatch(setPagesListAction(makePagesList(Page, 10)));
             // заполняем store
             dispatch(setCountriesAction(makePages(Page, 10)));
+            dispatch(setCountriesOnPageAction(Page.splice(0, 10)));
             // убираем анимацию загрузки
             setLoader(false);
         } catch (error) {
@@ -41,7 +43,7 @@ export default function App() {
 
     useEffect(() => {
         getPages();
-    });
+    }, []);
 
     return (
         <>
@@ -60,3 +62,6 @@ export default function App() {
         </>
     );
 }
+
+// await axios.get("http://localhost:5700")
+// "https://canal-service-back.herokuapp.com"

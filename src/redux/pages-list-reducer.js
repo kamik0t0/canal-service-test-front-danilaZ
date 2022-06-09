@@ -8,10 +8,6 @@ const STATE = {
     pages: [],
 };
 
-/**
- * @type {String} паттерн для redux
- */
-
 const PAGES = "PAGES";
 
 /**

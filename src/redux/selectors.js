@@ -21,3 +21,5 @@ export const getPages = (state) => state?.setPagesListReducer?.pages || [];
  * @returns {Number}
  */
 export const getPage = (state) => state?.setPageReducer?.page || 1;
+export const getCountriesOnPage = (state) =>
+    state?.setCountriesOnPageReducer?.countriesOnPage || 1;
