@@ -1,23 +1,20 @@
 import React, { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import classes from "./styles/footer.module.css";
 import { v4 as uuid } from "uuid";
 import { useDispatch, useSelector } from "react-redux";
 import { getPages } from "../../redux/selectors.js";
-import { setPageAction } from "../../redux/page-reducer.js";
 import { getCountries } from "../../redux/selectors.js";
 import { setPagesListAction } from "../../redux/pages-list-reducer.js";
 import { makePagesList } from "../../utils/makePagesList.js";
+import { useNavToPage } from "../../hooks/useNavToPage.js";
 import PropTypes from "prop-types";
 
 export default function Footer({ limit }) {
     const dispatch = useDispatch();
-    const navigate = useNavigate();
-    /**
-     * @type {array} массив динамически сгенерированных страниц
-     */
+
     const pages = useSelector(getPages);
     const items = useSelector(getCountries);
+    const navToPage = useNavToPage();
 
     useEffect(() => {
         dispatch(setPagesListAction(makePagesList(items, limit)));
@@ -26,19 +23,15 @@ export default function Footer({ limit }) {
     return (
         <>
             <div className={classes.footer}>
-                {pages.map((page, index) => {
+                {pages.map((pageNum, index) => {
                     return (
                         <div
                             data-testid={index + 1}
                             key={uuid()}
-                            onClick={() => {
-                                const page = index + 1;
-                                dispatch(setPageAction(page));
-                                navigate(`${page}`);
-                            }}
+                            onClick={navToPage}
                             className={classes.page}
                         >
-                            {page}
+                            {pageNum}
                         </div>
                     );
                 })}

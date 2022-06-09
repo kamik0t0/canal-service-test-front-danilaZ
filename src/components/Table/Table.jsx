@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import {
     getCountries,
     getPage,
@@ -10,8 +10,6 @@ import MyInput from "../../UI/input/MyInput/MyInput.jsx";
 import MySelect from "../../UI/input/MySelect/MySelect.jsx";
 import Footer from "../footer/Footer.jsx";
 import classes from "./styles/table.module.css";
-import { makePages } from "../../utils/makePages.js";
-import { setCountriesAction } from "../../redux/reducer.js";
 import useSort from "../../hooks/useSort.js";
 import {
     pageQttyOptions,
@@ -24,46 +22,32 @@ import { useFilterColumn } from "../../hooks/useFilterColumn.js";
 import { useFilterCondition } from "../../hooks/useFilterCondition.js";
 import Header from "./Header.jsx";
 import Rows from "./Rows.jsx";
+import { useLimit } from "../../hooks/useLimit.js";
 
 export default function Table() {
     const dispatch = useDispatch();
-    const navigate = useNavigate();
     const { pageParam } = useParams();
 
     const items = useSelector(getCountries);
     const page = useSelector(getPage);
     const countriesOnPage = useSelector(getCountriesOnPage);
-
-    // Если пользователь введет в строку поиска номер страницы
-    const actualPage = pageParam === page ? page : pageParam;
-    const initialRows =
-        items[actualPage - 1] !== undefined
-            ? [...items[actualPage - 1]]
-            : [...items[0]];
-
-    const [limit, setLimit] = useState(10);
+    const [rowLimit, setRowLimit] = useLimit(10, items);
     const [searchCondition, filterCondition] = useFilterCondition();
     const [searchName, filterColumn] = useFilterColumn();
 
-    const filter = useFilter(initialRows, searchName, searchCondition);
+    // Если пользователь введет в строку поиска номер страницы
+    const actualPageNumber = pageParam === page ? page : pageParam;
+    const actualPage =
+        items[actualPageNumber - 1] !== undefined
+            ? [...items[actualPageNumber - 1]]
+            : [...items[0]];
+
+    const filter = useFilter(actualPage, searchName, searchCondition);
     const sort = useSort(countriesOnPage);
 
     useEffect(() => {
-        dispatch(setCountriesOnPageAction(initialRows));
+        dispatch(setCountriesOnPageAction(actualPage));
     }, [page, items, pageParam]);
-
-    /**
-     * @function процедура, обрабатывает изменение количества отображаемых строк
-     * @name setPagesFooter
-     * @param {object} event
-     */
-
-    function setPagesFooter(event) {
-        const newLimit = +event.target.value;
-        setLimit(newLimit);
-        dispatch(setCountriesAction(makePages(items, newLimit)));
-        navigate(`${1}`);
-    }
 
     return (
         <>
@@ -107,7 +91,7 @@ export default function Table() {
                                 <MySelect
                                     data-testid="pages-qtty"
                                     defaultValue={["строк"][0]}
-                                    func={setPagesFooter}
+                                    func={setRowLimit}
                                     options={pageQttyOptions}
                                 />
                             </div>
@@ -120,7 +104,7 @@ export default function Table() {
                             <Rows countries={countriesOnPage}></Rows>
                         </div>
                     </div>
-                    <Footer limit={limit} />
+                    <Footer limit={rowLimit} />
                 </>
             }
         </>

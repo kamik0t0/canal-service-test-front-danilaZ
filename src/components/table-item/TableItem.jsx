@@ -1,4 +1,3 @@
-// представление накладной в виде таблицы с 4 колонками и 1 строки в списке накладных: покупок или продаж
 import React from "react";
 import classes from "./styles/table-item.module.css";
 import PropTypes from "prop-types";
@@ -32,7 +31,7 @@ export default function TableItem({ tableItem }) {
                 <div className={classes.item_name}>{tableItem.name}</div>
                 {/* количество */}
                 <div className={classes.item_qtty}>{tableItem.quantity}</div>
-                {/* расстояние */}
+                {/* площадь */}
                 <div className={classes.item_dist}>{tableItem.distance}</div>
             </div>
         </div>

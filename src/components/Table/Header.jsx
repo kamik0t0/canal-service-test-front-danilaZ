@@ -1,5 +1,6 @@
 import React from "react";
 import classes from "./styles/table.module.css";
+import PropTypes from "prop-types";
 
 const Header = ({ sort }) => {
     return (
@@ -19,3 +20,7 @@ const Header = ({ sort }) => {
 };
 
 export default Header;
+
+Header.propTypes = {
+    sort: PropTypes.func.isRequired,
+};

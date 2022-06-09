@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useState } from "react";
 
 export function useFilterCondition(initialColumn = "contains") {
     const [searchCondition, setSearchCondition] = useState(initialColumn);
